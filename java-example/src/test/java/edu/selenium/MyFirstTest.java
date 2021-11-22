@@ -17,7 +17,7 @@ public class MyFirstTest {
 
     @Before
     public void start() {
-        driver=new ChromeDriver(new ChromeDriverService.Builder().withVerbose(true).build());
+        driver=new ChromeDriver();
         wait=new WebDriverWait(driver, 10);
     }
 
