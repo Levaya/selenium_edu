@@ -2,6 +2,7 @@ package edu.selenium;
 
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -10,7 +11,14 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class Tests extends TestBase {
+public class AdminTests extends TestBase {
+    @Before
+    public void openHomePage(){
+        driver.get("http://localhost/litecart/admin/");
+        driver.findElement(By.name("username")).sendKeys("admin");
+        driver.findElement(By.name("password")).sendKeys("admin");
+        driver.findElement(By.name("login")).click();
+    }
 
     @Test
     public void test1() {
