@@ -18,7 +18,7 @@ public class FrontTests extends TestBase {
         //создаем цикл для перебора изображений
         for (int i=0; i<images.size();i++){
             //для каждого изображения получаем список стикеров
-            List<WebElement> sticker= images.get(i).findElements(By.cssSelector("div.image-wrapper>div"));
+            List<WebElement> sticker= images.get(i).findElements(By.cssSelector("div.image-wrapper>div[class*=sticker]"));
             //проверяем количество стикеров
             assert sticker.size()==1;
         }
