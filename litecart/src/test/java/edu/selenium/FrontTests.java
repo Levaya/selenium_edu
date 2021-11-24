@@ -5,16 +5,14 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import java.util.List;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class FrontTests extends TestBase {
-    @Before
-    public void openHomePage(){
-        driver.get("http://localhost/litecart/");
-    }
 
     @Test
     public void test1(){
+        driver.get("http://localhost/litecart/");
         //находим список всех изображений
         List<WebElement> images = driver.findElements(By.cssSelector("li.product"));
         //создаем цикл для перебора изображений
@@ -24,7 +22,5 @@ public class FrontTests extends TestBase {
             //проверяем количество стикеров
             assert sticker.size()==1;
         }
-
     }
-
 }
