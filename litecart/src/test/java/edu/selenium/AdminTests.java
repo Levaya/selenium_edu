@@ -75,10 +75,8 @@ public class AdminTests extends TestBase {
         List<WebElement> getRows= driver.findElements(By.cssSelector("tr.row"));
         //цикл для перечисления строк
         for (int i=0; i<getRows.size();i++){
-            //заново получаем список строк
-            List<WebElement> rows= driver.findElements(By.cssSelector("tr.row"));
             //получаем каждую строку отдельно
-            WebElement row = rows.get(i);
+            WebElement row = getRows.get(i);
             //находим значение количества зон
             WebElement zoneValue=row.findElement(By.cssSelector("td:nth-of-type(6)"));
             //преобразуем веб-элемент в строку
@@ -110,13 +108,16 @@ public class AdminTests extends TestBase {
                 assert zoneNames.equals(zoneDefault);
                 //переходим на страницу со списком стран
                 driver.get("http://localhost/litecart/admin/?app=countries&doc=countries");
+                //заново получаем список строк
+                List<WebElement> rows= driver.findElements(By.cssSelector("tr.row"));
+                getRows=rows;
             } else {
                 continue;
             }
         }
     }
 
-    @Test
+    //@Test
     public void test3(){
         driver.get("http://localhost/litecart/admin/?app=geo_zones&doc=geo_zones");
         //получаем список стран
