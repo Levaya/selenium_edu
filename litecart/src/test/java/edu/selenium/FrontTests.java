@@ -108,14 +108,71 @@ public class FrontTests extends TestBase {
         //получаем текст в строку
         String headerName=duckName.getText();
         //находим обычную цену
-        WebElement regularPrice=driver.findElement(By.cssSelector("s.regular-price"));
+        WebElement regularPrice=driver.findElement(By.cssSelector(".regular-price"));
         String rPriceCard=regularPrice.getText();
+
+        //получаем цвет обычной цены
+        String colorRegPriceCard= driver.findElement(By.cssSelector(".regular-price")).getCssValue("color");
+        //создаем пустой список
+        List<String> colorRegCardMatches = new ArrayList<String>();
+        //создаем шаблон для поиска чисел
+        Matcher matcherCard = Pattern.compile("\\d+").matcher(colorRegPrice);
+        while(matcherCard.find())
+            //добавляем в список строк числовые значения
+            colorRegCardMatches.add(matcherCard.group());
+        //приводим строки к числам
+        int rCard = Integer.parseInt(colorRegCardMatches.get(0));
+        int gCard = Integer.parseInt(colorRegCardMatches.get(1));
+        int bCard = Integer.parseInt(colorRegCardMatches.get(2));
+        //сверяем значения
+        assert rCard==gCard && gCard==bCard;
+
+        //получаем значение зачеркивания
+        String deletedCard=driver.findElement(By.cssSelector(".regular-price")).getCssValue("text-decoration-line");
+        String lineCard= "line-through";
+        assert deletedCard.equals(lineCard);
+
         //находим акционную цену
-        WebElement campaignPrice=driver.findElement(By.cssSelector("strong.campaign-price"));
+        WebElement campaignPrice=driver.findElement(By.cssSelector(".campaign-price"));
         String cPriceCard=campaignPrice.getText();
+
+        //проверяем наличие тега strong у акционной цены
+        assert isElementPresent(By.cssSelector("strong.campaign-price"));
+
+        //получаем цвет акционной цены
+        String colorCampPriceCard= driver.findElement(By.cssSelector(".campaign-price")).getCssValue("color");
+        //создаем пустой список
+        List<String> colorCampMatchesCard = new ArrayList<String>();
+        //создаем шаблон для поиска чисел
+        Matcher campMatcherCard = Pattern.compile("\\d+").matcher(colorCampPrice);
+        while(campMatcherCard.find())
+            //добавляем в список строк числовые значения
+            colorCampMatchesCard.add(campMatcherCard.group());
+        //приводим строки к числам
+        int gCampCard = Integer.parseInt(colorCampMatchesCard.get(1));
+        int bCampCard = Integer.parseInt(colorCampMatchesCard.get(2));
+        //сверяем значения
+        assert gCampCard==0 && bCampCard==0;
+
         //сравниваем строки
         assert firstDuck.equals(headerName);
         assert rPrice.equals(rPriceCard);
         assert cPrice.equals(cPriceCard);
+
+        //получаем высоту обычной цены
+        String heightRegPriceCard=driver.findElement(By.cssSelector(".regular-price")).getAttribute("offsetHeight");
+        int heightRPriceCard=Integer.parseInt(heightRegPriceCard);
+        //получаем ширину обычной цены
+        String widthRegPriceCard=driver.findElement(By.cssSelector(".regular-price")).getAttribute("offsetWidth");
+        int widthRPriceCard=Integer.parseInt(widthRegPriceCard);
+        //получаем высоту акционной цены
+        String heightCampPriceCard=driver.findElement(By.cssSelector(".campaign-price")).getAttribute("offsetHeight");
+        int heightCPriceCard=Integer.parseInt(heightCampPriceCard);
+        //получаем ширину акционной цены
+        String widthCampPriceCard=driver.findElement(By.cssSelector(".campaign-price")).getAttribute("offsetWidth");
+        int widthCPriceCard=Integer.parseInt(widthCampPriceCard);
+        //проверяем размеры
+        assert heightCPriceCard>heightRPriceCard;
+        assert widthCPriceCard>widthRPriceCard;
     }
 }
