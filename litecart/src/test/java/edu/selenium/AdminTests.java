@@ -6,11 +6,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
 
@@ -51,7 +54,7 @@ public class AdminTests extends TestBase {
         }
     }
 
-    @Test
+    //@Test
     public void test2(){
         driver.get("http://localhost/litecart/admin/?app=countries&doc=countries");
         //получаем список стран
@@ -148,6 +151,46 @@ public class AdminTests extends TestBase {
             //переходим на исходную страницу
             driver.get("http://localhost/litecart/admin/?app=geo_zones&doc=geo_zones");
         }
+    }
+
+    @Test
+    public void test4(){
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+        driver.findElement(By.xpath("//span[.='Catalog']")).click();
+        driver.findElement(By.cssSelector("[href*=edit_product]")).click();
+        //Блок General
+        driver.findElement(By.xpath("//label[.=' Enabled']")).click();
+        driver.findElement(By.name("name[en]")).sendKeys("Devil Duck");
+        driver.findElement(By.name("code")).sendKeys("DD001");
+        driver.findElement(By.xpath("//input[@data-name='Root']")).click();
+        driver.findElement(By.xpath("//input[@data-name='Rubber Ducks']")).click();
+        driver.findElement(By.xpath("//input[contains(@name,'product_groups[]') and contains (@value,'1-3')]")).click();
+        driver.findElement(By.name("quantity")).sendKeys("3");
+        String link= "DevilDuck.jpg";
+        String path = Path.of(link).toAbsolutePath().toString();
+        driver.findElement(By.name("new_images[]")).sendKeys(path);
+        driver.findElement(By.name("date_valid_from")).sendKeys("20112021");
+        driver.findElement(By.name("date_valid_to")).sendKeys("20112022");
+        //Блок Information
+        driver.findElement(By.xpath("//a[.='Information']")).click();
+        WebElement manufacturer = driver.findElement(By.name("manufacturer_id"));
+        new Select(manufacturer).selectByValue("1");
+        driver.findElement(By.cssSelector(".trumbowyg-editor")).sendKeys("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean viverra quam nec enim vulputate fermentum. Etiam fringilla vestibulum dolor, vel viverra est placerat at. Donec non pretium ante. Nullam varius eleifend elit, vitae fermentum felis placerat dictum. Etiam fringilla turpis a maximus auctor. Nunc quis erat tellus. Nulla congue quis velit a consectetur. Integer eu lacus nec leo consequat bibendum vitae id eros. ");
+        driver.findElement(By.name("head_title[en]")).sendKeys("Devil Duck");
+        //Блок Prices
+        driver.findElement(By.xpath("//a[.='Prices']")).click();
+        driver.findElement(By.name("purchase_price")).clear();
+        driver.findElement(By.name("purchase_price")).sendKeys("30");
+        WebElement currency= driver.findElement(By.name("purchase_price_currency_code"));
+        new Select(currency).selectByValue("USD");
+        driver.findElement(By.name("prices[USD]")).sendKeys("30");
+        driver.findElement(By.name("prices[EUR]")).sendKeys("35");
+        //сохраняем
+        driver.findElement(By.name("save")).click();
+        //проверяем
+        driver.findElement(By.cssSelector("#doc-catalog")).click();
+        driver.findElement(By.xpath("//a[.='Rubber Ducks']")).click();
+        assert isElementPresent(By.xpath("//a[.='Devil Duck']"));
     }
 }
 

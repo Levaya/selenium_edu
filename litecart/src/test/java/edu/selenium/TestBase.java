@@ -1,8 +1,10 @@
 package edu.selenium;
 
+import jdk.jfr.Timespan;
 import org.junit.After;
 import org.junit.Before;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.xml.sax.Locator;
@@ -47,6 +49,13 @@ public class TestBase {
         return saltStr;
     }
 
+    public void setDatepicker(WebDriver d, String cssSelector, String date)
+    {
+        new WebDriverWait(d, 30).until(driver -> driver.findElement(By.cssSelector(cssSelector)));
+        ((JavascriptExecutor)d).executeScript(
+            String.format("$('{0}').datepicker('setDate', '{1}')", cssSelector, date));
+    }
+
     @Before
     public void init() throws ClassNotFoundException, InstantiationException, IllegalAccessException, IOException {
         props=new Properties();
@@ -58,7 +67,6 @@ public class TestBase {
         Class classType = forName(driverFromProperties);
         //через приведение типов создаем новый объект выбранного драйвера
         driver = (WebDriver) classType.newInstance();
-        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         wait = new WebDriverWait(driver, 10);
     }
 

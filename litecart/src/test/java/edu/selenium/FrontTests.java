@@ -6,6 +6,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.Color;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
 import java.util.*;
@@ -192,6 +194,8 @@ public class FrontTests extends TestBase {
         WebElement countrySelect= driver.findElement(By.cssSelector("[name=country_code]"));
         new Select(countrySelect).selectByVisibleText("United States");
         WebElement zoneSelect=driver.findElement(By.cssSelector("select[name=zone_code]"));
+        //ожидаем появление выпадающего списка
+        wait.until(ExpectedConditions.visibilityOf(zoneSelect));
         new Select(zoneSelect).selectByVisibleText("California");
         String email= getSaltString();
         driver.findElement(By.cssSelector("[name=email]")).sendKeys(email+"@gmail.com");
