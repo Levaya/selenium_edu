@@ -3,10 +3,13 @@ package edu.selenium;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.Color;
+import org.openqa.selenium.support.ui.Select;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,13 +26,13 @@ public class FrontTests extends TestBase {
         //создаем цикл для перебора изображений
         for (int i=0; i<images.size();i++){
             //для каждого изображения получаем список стикеров
-            List<WebElement> sticker= images.get(i).findElements(By.cssSelector(".image-wrapper .sticker"));
+            List<WebElement> sticker= images.get(i).findElements(By.cssSelector(".sticker"));
             //проверяем количество стикеров
             assert sticker.size()==1;
         }
     }
 
-    @Test
+    //@Test
     public void test2(){
         //находим название на главной странице
         WebElement yellowDuck= driver.findElement(By.cssSelector("#box-campaigns .name"));
@@ -174,5 +177,40 @@ public class FrontTests extends TestBase {
         //проверяем размеры
         assert heightCPriceCard>heightRPriceCard;
         assert widthCPriceCard>widthRPriceCard;
+    }
+
+    @Test
+    public void test3(){
+        //клик по ссылке
+        driver.findElement(By.cssSelector(".content table a")).click();
+        //заполнение формы
+        driver.findElement(By.cssSelector("[name=firstname]")).sendKeys("Ivan");
+        driver.findElement(By.cssSelector("[name=lastname]")).sendKeys("Ivanov");
+        driver.findElement(By.cssSelector("[name=address1]")).sendKeys("Privet Drive");
+        driver.findElement(By.cssSelector("[name=postcode]")).sendKeys("12345");
+        driver.findElement(By.cssSelector("[name=city]")).sendKeys("New York");
+        WebElement countrySelect= driver.findElement(By.cssSelector("[name=country_code]"));
+        new Select(countrySelect).selectByVisibleText("United States");
+        WebElement zoneSelect=driver.findElement(By.cssSelector("select[name=zone_code]"));
+        new Select(zoneSelect).selectByVisibleText("California");
+        String email= getSaltString();
+        driver.findElement(By.cssSelector("[name=email]")).sendKeys(email+"@gmail.com");
+        WebElement phoneField=driver.findElement(By.name("phone"));
+        phoneField.click();
+        phoneField.sendKeys(Keys.HOME);
+        phoneField.sendKeys("123456789");
+        driver.findElement(By.name("password")).sendKeys("user");
+        driver.findElement(By.name("confirmed_password")).sendKeys("user");
+        //клик по кнопке Создать аккаунт
+        driver.findElement(By.name("create_account")).click();
+        //logout
+        driver.findElement(By.xpath("//a[.='Logout']")).click();
+        //заполнение полей для авторизации
+        driver.findElement(By.name("email")).sendKeys(email+"@gmail.com");
+        driver.findElement(By.name("password")).sendKeys("user");
+        //login
+        driver.findElement(By.name("login")).click();
+        //logout
+        driver.findElement(By.xpath("//a[.='Logout']")).click();
     }
 }
