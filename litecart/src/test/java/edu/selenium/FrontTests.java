@@ -164,21 +164,16 @@ public class FrontTests extends TestBase {
         assert rPrice.equals(rPriceCard);
         assert cPrice.equals(cPriceCard);
 
-        //получаем высоту обычной цены
-        String heightRegPriceCard=driver.findElement(By.cssSelector(".regular-price")).getAttribute("offsetHeight");
-        int heightRPriceCard=Integer.parseInt(heightRegPriceCard);
-        //получаем ширину обычной цены
-        String widthRegPriceCard=driver.findElement(By.cssSelector(".regular-price")).getAttribute("offsetWidth");
-        int widthRPriceCard=Integer.parseInt(widthRegPriceCard);
-        //получаем высоту акционной цены
-        String heightCampPriceCard=driver.findElement(By.cssSelector(".campaign-price")).getAttribute("offsetHeight");
-        int heightCPriceCard=Integer.parseInt(heightCampPriceCard);
-        //получаем ширину акционной цены
-        String widthCampPriceCard=driver.findElement(By.cssSelector(".campaign-price")).getAttribute("offsetWidth");
-        int widthCPriceCard=Integer.parseInt(widthCampPriceCard);
-        //проверяем размеры
-        assert heightCPriceCard>heightRPriceCard;
-        assert widthCPriceCard>widthRPriceCard;
+        //получаем размер шрифта обычной цены
+        String sizeRegPriceCard=driver.findElement(By.cssSelector(".regular-price")).getCssValue("font-size")
+                .replaceAll("px","");
+        int sizeRPriceCard=Integer.parseInt(sizeRegPriceCard);
+        //получаем размер шрифта акционной цены
+        String sizeCampPriceCard=driver.findElement(By.cssSelector(".campaign-price")).getCssValue("font-size")
+                .replaceAll("px", "");
+        int sizeCPriceCard=Integer.parseInt(sizeCampPriceCard);
+        //проверяем шрифты
+        assert sizeCPriceCard>sizeRPriceCard;
     }
 
     @Test
@@ -191,8 +186,10 @@ public class FrontTests extends TestBase {
         driver.findElement(By.cssSelector("[name=address1]")).sendKeys("Privet Drive");
         driver.findElement(By.cssSelector("[name=postcode]")).sendKeys("12345");
         driver.findElement(By.cssSelector("[name=city]")).sendKeys("New York");
-        WebElement countrySelect= driver.findElement(By.cssSelector("[name=country_code]"));
-        new Select(countrySelect).selectByVisibleText("United States");
+        //WebElement countrySelect= driver.findElement(By.cssSelector("[name=country_code]"));
+        driver.findElement(By.cssSelector(".select2-selection")).click();
+        driver.findElement(By.cssSelector("input.select2-search__field")).sendKeys("United States" + Keys.ENTER);
+        //new Select(countrySelect).selectByVisibleText("United States");
         WebElement zoneSelect=driver.findElement(By.cssSelector("select[name=zone_code]"));
         //ожидаем появление выпадающего списка
         wait.until(ExpectedConditions.visibilityOf(zoneSelect));
