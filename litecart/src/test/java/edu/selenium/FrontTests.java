@@ -4,7 +4,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.Color;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -12,6 +14,7 @@ import org.openqa.selenium.support.ui.Select;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -176,7 +179,7 @@ public class FrontTests extends TestBase {
         assert sizeCPriceCard>sizeRPriceCard;
     }
 
-    @Test
+    //@Test
     public void test3(){
         //клик по ссылке
         driver.findElement(By.cssSelector(".content table a")).click();
@@ -213,5 +216,69 @@ public class FrontTests extends TestBase {
         driver.findElement(By.name("login")).click();
         //logout
         driver.findElement(By.xpath("//a[.='Logout']")).click();
+    }
+
+    @Test
+    public void test4(){
+        //клик по первому товару
+        driver.findElement(By.cssSelector("#box-most-popular li:first-child")).click();
+        //добавление в корзину
+        if (driver.findElements(By.cssSelector(".options")).size()>0){
+        WebElement select = driver.findElement(By.tagName("select"));
+        new Select(select).selectByIndex(1);
+        driver.findElement(By.name("add_cart_product")).click();}
+        else {driver.findElement(By.name("add_cart_product")).click();}
+        //ждем изменения количества
+        wait.until((WebDriver d) -> d.findElement(By.xpath("//span[@class='quantity' and contains(.,'1')]")));
+        //домой
+        driver.findElement(By.className("fa-home")).click();
+        //добавляем еще товар
+        driver.findElement(By.cssSelector("#box-most-popular li:first-child")).click();
+        if (driver.findElements(By.cssSelector(".options")).size()>0){
+        WebElement select = driver.findElement(By.tagName("select"));
+        new Select(select).selectByIndex(1);
+        driver.findElement(By.name("add_cart_product")).click();}
+        else {driver.findElement(By.name("add_cart_product")).click();}
+        wait.until((WebDriver d) -> d.findElement(By.xpath("//span[@class='quantity' and contains(.,'2')]")));
+        driver.findElement(By.className("fa-home")).click();
+        //добавляем еще товар
+        driver.findElement(By.cssSelector("#box-most-popular li:first-child")).click();
+        if (driver.findElements(By.cssSelector(".options")).size()>0){
+        WebElement select = driver.findElement(By.tagName("select"));
+        new Select(select).selectByIndex(1);
+        driver.findElement(By.name("add_cart_product")).click();}
+        else {driver.findElement(By.name("add_cart_product")).click();}
+        wait.until((WebDriver d) -> d.findElement(By.xpath("//span[@class='quantity' and contains(.,'3')]")));
+        //заходим в корзину
+        driver.findElement(By.cssSelector("#cart .link")).click();
+        WebElement dataTable = driver.findElement(By.className("dataTable"));
+        //удаляем товар
+        WebElement fieldQuantity = driver.findElement(By.name("quantity"));
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.name("quantity")));
+        Actions action = new Actions(driver);
+        action.moveToElement(fieldQuantity);
+        action.moveByOffset(25, 6);
+        action.click();
+        action.perform();
+        driver.findElement(By.name("update_cart_item")).click();
+        wait.until(ExpectedConditions.stalenessOf(dataTable));
+        //повторяем
+        WebElement fieldQuantity2 = driver.findElement(By.name("quantity"));
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.name("quantity")));
+        action.moveToElement(fieldQuantity2);
+        action.moveByOffset(25, 6);
+        action.click();
+        action.perform();
+        driver.findElement(By.name("update_cart_item")).click();
+        wait.until(ExpectedConditions.stalenessOf(dataTable));
+        //повторяем
+        WebElement fieldQuantity3 = driver.findElement(By.name("quantity"));
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.name("quantity")));
+        action.moveToElement(fieldQuantity3);
+        action.moveByOffset(25, 6);
+        action.click();
+        action.perform();
+        driver.findElement(By.name("update_cart_item")).click();
+        wait.until(ExpectedConditions.stalenessOf(dataTable));
     }
 }
