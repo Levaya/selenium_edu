@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
 import java.nio.file.Path;
@@ -156,9 +157,15 @@ public class AdminTests extends TestBase {
     @Test
     public void test4(){
         driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-        driver.findElement(By.xpath("//span[.='Catalog']")).click();
+        //проверяем количество позиций создаваемого товара в каталоге
+        driver.findElement(By.cssSelector("li#app-:nth-of-type(2)")).click();
+        driver.findElement(By.cssSelector("#doc-catalog")).click();
+        driver.findElement(By.xpath("//a[.='Rubber Ducks']")).click();
+        List<WebElement> defaultDucks = driver.findElements(By.xpath("//a[.='Devil Duck']"));
+        //переход на создание товара
         driver.findElement(By.cssSelector("[href*=edit_product]")).click();
         //Блок General
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.name("date_valid_to")));
         driver.findElement(By.xpath("//label[.=' Enabled']")).click();
         driver.findElement(By.name("name[en]")).sendKeys("Devil Duck");
         driver.findElement(By.name("code")).sendKeys("DD001");
@@ -172,12 +179,14 @@ public class AdminTests extends TestBase {
         driver.findElement(By.name("date_valid_from")).sendKeys("20112021");
         driver.findElement(By.name("date_valid_to")).sendKeys("20112022");
         //Блок Information
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.name("meta_description[en]")));
         driver.findElement(By.xpath("//a[.='Information']")).click();
         WebElement manufacturer = driver.findElement(By.name("manufacturer_id"));
         new Select(manufacturer).selectByValue("1");
         driver.findElement(By.cssSelector(".trumbowyg-editor")).sendKeys("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean viverra quam nec enim vulputate fermentum. Etiam fringilla vestibulum dolor, vel viverra est placerat at. Donec non pretium ante. Nullam varius eleifend elit, vitae fermentum felis placerat dictum. Etiam fringilla turpis a maximus auctor. Nunc quis erat tellus. Nulla congue quis velit a consectetur. Integer eu lacus nec leo consequat bibendum vitae id eros. ");
         driver.findElement(By.name("head_title[en]")).sendKeys("Devil Duck");
         //Блок Prices
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("table-campaigns")));
         driver.findElement(By.xpath("//a[.='Prices']")).click();
         driver.findElement(By.name("purchase_price")).clear();
         driver.findElement(By.name("purchase_price")).sendKeys("30");
@@ -190,7 +199,8 @@ public class AdminTests extends TestBase {
         //проверяем
         driver.findElement(By.cssSelector("#doc-catalog")).click();
         driver.findElement(By.xpath("//a[.='Rubber Ducks']")).click();
-        assert isElementPresent(By.xpath("//a[.='Devil Duck']"));
+        List<WebElement> createdDucks = driver.findElements(By.xpath("//a[.='Devil Duck']"));
+        assert createdDucks.size()>defaultDucks.size();
     }
 }
 
