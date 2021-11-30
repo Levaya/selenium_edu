@@ -33,7 +33,7 @@ public class AdminTests extends TestBase {
         List<WebElement> strings = menu.findElements(By.className("name"));
         //цикл для перебора элементов списка
         for (int i = 0; i < strings.size(); i++) {
-            //заново находим список, теперь по css-селектору
+            //заново находим список
             List<WebElement> s = driver.findElements(By.cssSelector("ul#box-apps-menu>li"));
             //перебираем элементы списка и кликаем
             s.get(i).click();
@@ -207,118 +207,35 @@ public class AdminTests extends TestBase {
         driver.findElement(By.className("button")).click();
         //получаем id основного окна
         String originalWindow= driver.getWindowHandle();
-        //клик по первой ссылке
-        driver.findElement(By.cssSelector("[href*=alpha-2] i")).click();
-        //ожидаем появление окна
-        wait.until(ExpectedConditions.numberOfWindowsToBe(2));
-        //получаем id окон
-        Set<String> handles = driver.getWindowHandles();
-        //удаляем id основного окна из списка
-        handles.remove(originalWindow);
-        //сохраняем id нового окна в переменную
-        String alphaTwoWindow = handles.iterator().next();
-        //переключаемся на новое окно
-        driver.switchTo().window(alphaTwoWindow);
-        //закрываем
-        driver.close();
-        //переключаемся на основное окно
-        driver.switchTo().window(originalWindow);
-        //клик по второй ссылке
-        driver.findElement(By.cssSelector("[href*=alpha-3] i")).click();
-        //ожидаем появление окна
-        wait.until(ExpectedConditions.numberOfWindowsToBe(2));
-        //получаем id окон
-        Set<String> handles2 = driver.getWindowHandles();
-        //удаляем id основного окна из списка
-        handles2.remove(originalWindow);
-        //сохраняем id нового окна в переменную
-        String alphaThreeWindow = handles2.iterator().next();
-        //переключаемся на новое окно
-        driver.switchTo().window(alphaThreeWindow);
-        //закрываем
-        driver.close();
-        //переключаемся на основное окно
-        driver.switchTo().window(originalWindow);
-        //клик по третьей ссылке
-        driver.findElement(By.xpath("//strong[.='Tax ID Format']/..//i")).click();
-        //ожидаем появление окна
-        wait.until(ExpectedConditions.numberOfWindowsToBe(2));
-        //получаем id окон
-        Set<String> handles3 = driver.getWindowHandles();
-        //удаляем id основного окна из списка
-        handles3.remove(originalWindow);
-        //сохраняем id нового окна в переменную
-        String taxIdFormatWindow = handles3.iterator().next();
-        //переключаемся на новое окно
-        driver.switchTo().window(taxIdFormatWindow);
-        //закрываем
-        driver.close();
-        //переключаемся на основное окно
-        driver.switchTo().window(originalWindow);
-        //клик по четвертой ссылке
-        driver.findElement(By.cssSelector("[href*=address-formats] i")).click();
-        //ожидаем появление окна
-        wait.until(ExpectedConditions.numberOfWindowsToBe(2));
-        //получаем id окон
-        Set<String> handles4 = driver.getWindowHandles();
-        //удаляем id основного окна из списка
-        handles4.remove(originalWindow);
-        //сохраняем id нового окна в переменную
-        String addressFormatWindow = handles4.iterator().next();
-        //переключаемся на новое окно
-        driver.switchTo().window(addressFormatWindow);
-        //закрываем
-        driver.close();
-        //переключаемся на основное окно
-        driver.switchTo().window(originalWindow);
-        //клик по пятой ссылке
-        driver.findElement(By.xpath("//strong[.='Postcode Format']/..//i")).click();
-        //ожидаем появление окна
-        wait.until(ExpectedConditions.numberOfWindowsToBe(2));
-        //получаем id окон
-        Set<String> handles5 = driver.getWindowHandles();
-        //удаляем id основного окна из списка
-        handles5.remove(originalWindow);
-        //сохраняем id нового окна в переменную
-        String postcodeFormatWindow = handles5.iterator().next();
-        //переключаемся на новое окно
-        driver.switchTo().window(postcodeFormatWindow);
-        //закрываем
-        driver.close();
-        //переключаемся на основное окно
-        driver.switchTo().window(originalWindow);
-        //клик по шестой ссылке
-        driver.findElement(By.cssSelector("[href*=currency] i")).click();
-        //ожидаем появление окна
-        wait.until(ExpectedConditions.numberOfWindowsToBe(2));
-        //получаем id окон
-        Set<String> handles6 = driver.getWindowHandles();
-        //удаляем id основного окна из списка
-        handles6.remove(originalWindow);
-        //сохраняем id нового окна в переменную
-        String currencyCodeWindow = handles6.iterator().next();
-        //переключаемся на новое окно
-        driver.switchTo().window(currencyCodeWindow);
-        //закрываем
-        driver.close();
-        //переключаемся на основное окно
-        driver.switchTo().window(originalWindow);
-        //клик по седьмой ссылке
-        driver.findElement(By.cssSelector("[href*=calling_codes] i")).click();
-        //ожидаем появление окна
-        wait.until(ExpectedConditions.numberOfWindowsToBe(2));
-        //получаем id окон
-        Set<String> handles7 = driver.getWindowHandles();
-        //удаляем id основного окна из списка
-        handles7.remove(originalWindow);
-        //сохраняем id нового окна в переменную
-        String phoneCountryCodeWindow = handles7.iterator().next();
-        //переключаемся на новое окно
-        driver.switchTo().window(phoneCountryCodeWindow);
-        //закрываем
-        driver.close();
-        //переключаемся на основное окно
-        driver.switchTo().window(originalWindow);
+        //создаем список ссылочных элементов
+        List<WebElement> elements = new ArrayList<>();
+        elements.add(driver.findElement(By.cssSelector("[href*=alpha-2] i")));
+        elements.add(driver.findElement(By.cssSelector("[href*=alpha-3] i")));
+        elements.add(driver.findElement(By.xpath("//strong[.='Tax ID Format']/..//i")));
+        elements.add(driver.findElement(By.cssSelector("[href*=address-formats] i")));
+        elements.add(driver.findElement(By.xpath("//strong[.='Postcode Format']/..//i")));
+        elements.add(driver.findElement(By.cssSelector("[href*=currency] i")));
+        elements.add(driver.findElement(By.cssSelector("[href*=calling_codes] i")));
+        for (WebElement element:elements) {
+            //переключаемся на основное окно
+            driver.switchTo().window(originalWindow);
+            //клик по ссылке
+            element.click();
+            //ожидаем появление окна
+            wait.until(ExpectedConditions.numberOfWindowsToBe(2));
+            //получаем id окон
+            Set<String> handles = driver.getWindowHandles();
+            //удаляем id основного окна из списка
+            handles.remove(originalWindow);
+            //сохраняем id нового окна в переменную
+            String newWindow = handles.iterator().next();
+            //переключаемся на новое окно
+            driver.switchTo().window(newWindow);
+            //закрываем
+            driver.close();
+            //переключаемся на основное окно
+            driver.switchTo().window(originalWindow);
+        }
     }
 }
 

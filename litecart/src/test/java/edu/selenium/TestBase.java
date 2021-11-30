@@ -12,7 +12,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.xml.sax.Locator;
 
 import java.io.IOException;
-import java.util.NoSuchElementException;
+import org.openqa.selenium.NoSuchElementException;
 import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
