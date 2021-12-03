@@ -3,21 +3,29 @@ package edu.selenium;
 import jdk.jfr.Timespan;
 import org.junit.After;
 import org.junit.Before;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.ie.InternetExplorerOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.xml.sax.Locator;
 
 import java.io.IOException;
-import org.openqa.selenium.NoSuchElementException;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.Class.forName;
+import static org.openqa.selenium.Platform.*;
 
 // Базовый класс теста
 public class TestBase {
@@ -69,6 +77,9 @@ public class TestBase {
         Class classType = forName(driverFromProperties);
         //через приведение типов создаем новый объект выбранного драйвера
         driver = (WebDriver) classType.newInstance();
+//        FirefoxOptions options = new FirefoxOptions();
+//        options.setBinary("C:\\Program Files\\Mozilla Firefox\\firefox.exe");
+//        driver = new RemoteWebDriver(new URL("http://192.168.1.64:4444"), new InternetExplorerOptions());
         wait = new WebDriverWait(driver, 10);
     }
 

@@ -152,7 +152,7 @@ public class AdminTests extends TestBase {
         }
     }
 
-    //@Test
+    @Test
     public void test4(){
         driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         //проверяем количество позиций создаваемого товара в каталоге
@@ -163,7 +163,7 @@ public class AdminTests extends TestBase {
         //переход на создание товара
         driver.findElement(By.cssSelector("[href*=edit_product]")).click();
         //Блок General
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.name("date_valid_to")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("date_valid_to")));
         driver.findElement(By.xpath("//label[.=' Enabled']")).click();
         driver.findElement(By.name("name[en]")).sendKeys("Devil Duck");
         driver.findElement(By.name("code")).sendKeys("DD001");
@@ -177,15 +177,15 @@ public class AdminTests extends TestBase {
         driver.findElement(By.name("date_valid_from")).sendKeys("20112021");
         driver.findElement(By.name("date_valid_to")).sendKeys("20112022");
         //Блок Information
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.name("meta_description[en]")));
         driver.findElement(By.xpath("//a[.='Information']")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("meta_description[en]")));
         WebElement manufacturer = driver.findElement(By.name("manufacturer_id"));
         new Select(manufacturer).selectByValue("1");
         driver.findElement(By.cssSelector(".trumbowyg-editor")).sendKeys("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean viverra quam nec enim vulputate fermentum. Etiam fringilla vestibulum dolor, vel viverra est placerat at. Donec non pretium ante. Nullam varius eleifend elit, vitae fermentum felis placerat dictum. Etiam fringilla turpis a maximus auctor. Nunc quis erat tellus. Nulla congue quis velit a consectetur. Integer eu lacus nec leo consequat bibendum vitae id eros. ");
         driver.findElement(By.name("head_title[en]")).sendKeys("Devil Duck");
         //Блок Prices
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("table-campaigns")));
         driver.findElement(By.xpath("//a[.='Prices']")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table-campaigns")));
         driver.findElement(By.name("purchase_price")).clear();
         driver.findElement(By.name("purchase_price")).sendKeys("30");
         WebElement currency= driver.findElement(By.name("purchase_price_currency_code"));
@@ -201,7 +201,7 @@ public class AdminTests extends TestBase {
         assert createdDucks.size()>defaultDucks.size();
     }
 
-    @Test
+    //@Test
     public void test5(){
         driver.findElement(By.cssSelector("[href*=countries]")).click();
         driver.findElement(By.className("button")).click();
