@@ -256,6 +256,7 @@ public class AdminTests extends TestBase {
             driver.findElement(By.xpath("//a[.='Rubber Ducks']")).click();
             driver.findElement(By.xpath("//a[.='Subcategory']")).click();
             driver.findElement(By.xpath(duckLocator)).click();
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[name*=new_images]")));
             List<LogEntry> logEntries = driver.manage().logs().get("browser").getAll();
             assert logEntries.isEmpty();
         }
