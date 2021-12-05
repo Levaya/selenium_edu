@@ -252,4 +252,9 @@ public class FrontTests extends TestBase {
             wait.until(ExpectedConditions.stalenessOf(dataTable));
         }
     }
+
+    //@Test
+    public void google(){
+        driver.get("http:/www.google.com");
+    }
 }

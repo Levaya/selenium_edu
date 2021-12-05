@@ -77,9 +77,7 @@ public class TestBase {
         Class classType = forName(driverFromProperties);
         //через приведение типов создаем новый объект выбранного драйвера
         driver = (WebDriver) classType.newInstance();
-//        FirefoxOptions options = new FirefoxOptions();
-//        options.setBinary("C:\\Program Files\\Mozilla Firefox\\firefox.exe");
-//        driver = new RemoteWebDriver(new URL("http://192.168.1.64:4444"), new InternetExplorerOptions());
+        //driver = new RemoteWebDriver(new URL("http://192.168.1.64:4444"), new InternetExplorerOptions());
         wait = new WebDriverWait(driver, 10);
     }
 

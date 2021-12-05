@@ -7,6 +7,8 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.logging.LogEntries;
+import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
@@ -152,7 +154,7 @@ public class AdminTests extends TestBase {
         }
     }
 
-    @Test
+    //@Test
     public void test4(){
         driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         //проверяем количество позиций создаваемого товара в каталоге
@@ -235,6 +237,27 @@ public class AdminTests extends TestBase {
             driver.close();
             //переключаемся на основное окно
             driver.switchTo().window(originalWindow);
+        }
+    }
+
+    @Test
+    public void test6(){
+        driver.findElement(By.cssSelector("#box-apps-menu>li:nth-of-type(2)>a")).click();
+        List<String> duckLocators = new ArrayList<>();
+        duckLocators.add("//tr[@class='row'][4]//a[contains(., 'Duck')]");
+        duckLocators.add("//tr[@class='row'][5]//a[contains(., 'Duck')]");
+        duckLocators.add("//tr[@class='row'][6]//a[contains(., 'Duck')]");
+        duckLocators.add("//tr[@class='row'][7]//a[contains(., 'Duck')]");
+        duckLocators.add("//tr[@class='row'][8]//a[contains(., 'Duck')]");
+        duckLocators.add("//tr[@class='row'][9]//a[contains(., 'Duck')]");
+        duckLocators.add("//tr[@class='row'][10]//a[contains(., 'Duck')]");
+        for (String duckLocator: duckLocators){
+            driver.findElement(By.id("doc-catalog")).click();
+            driver.findElement(By.xpath("//a[.='Rubber Ducks']")).click();
+            driver.findElement(By.xpath("//a[.='Subcategory']")).click();
+            driver.findElement(By.xpath(duckLocator)).click();
+            List<LogEntry> logEntries = driver.manage().logs().get("browser").getAll();
+            assert logEntries.isEmpty();
         }
     }
 }
