@@ -242,23 +242,31 @@ public class AdminTests extends TestBase {
 
     @Test
     public void test6(){
+        //переходим в каталог
         driver.findElement(By.cssSelector("#box-apps-menu>li:nth-of-type(2)>a")).click();
-        List<String> duckLocators = new ArrayList<>();
-        duckLocators.add("//tr[@class='row'][4]//a[contains(., 'Duck')]");
-        duckLocators.add("//tr[@class='row'][5]//a[contains(., 'Duck')]");
-        duckLocators.add("//tr[@class='row'][6]//a[contains(., 'Duck')]");
-        duckLocators.add("//tr[@class='row'][7]//a[contains(., 'Duck')]");
-        duckLocators.add("//tr[@class='row'][8]//a[contains(., 'Duck')]");
-        duckLocators.add("//tr[@class='row'][9]//a[contains(., 'Duck')]");
-        duckLocators.add("//tr[@class='row'][10]//a[contains(., 'Duck')]");
-        for (String duckLocator: duckLocators){
-            driver.findElement(By.id("doc-catalog")).click();
-            driver.findElement(By.xpath("//a[.='Rubber Ducks']")).click();
-            driver.findElement(By.xpath("//a[.='Subcategory']")).click();
-            driver.findElement(By.xpath(duckLocator)).click();
+        //открываем все папки с категориями
+        while (isElementPresent(By.xpath("//i[@class='fa fa-folder']/../a"))){
+            driver.findElement(By.xpath("//i[@class='fa fa-folder']/../a")).click();
+        }
+        //находим все товары
+        List<WebElement> ducks = driver.findElements(By.xpath("//img/../a"));
+        //перебираем товары в цикле
+        for (int i=0; i< ducks.size(); i++){
+            //снова находим товары
+            List<WebElement> items = driver.findElements(By.xpath("//img/../a"));
+            //клик по следующему товару
+            items.get(i).click();
+            //ждем загрузки карточки товара
             wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[name*=new_images]")));
+            //получаем список сообщений браузера
             List<LogEntry> logEntries = driver.manage().logs().get("browser").getAll();
+            //проверяем
             assert logEntries.isEmpty();
+            //выходим в каталог и снова открываем все категории
+            driver.findElement(By.cssSelector("#box-apps-menu>li:nth-of-type(2)>a")).click();
+            while (isElementPresent(By.xpath("//i[@class='fa fa-folder']/../a"))){
+                driver.findElement(By.xpath("//i[@class='fa fa-folder']/../a")).click();
+            }
         }
     }
 }

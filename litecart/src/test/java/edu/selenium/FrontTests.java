@@ -2,10 +2,7 @@ package edu.selenium;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.Color;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -218,7 +215,7 @@ public class FrontTests extends TestBase {
         driver.findElement(By.xpath("//a[.='Logout']")).click();
     }
 
-    @Test
+    //@Test
     public void test4(){
         List<String> locators = new ArrayList<>();
         locators.add("//span[@class='quantity' and contains(.,'1')]");
@@ -253,8 +250,8 @@ public class FrontTests extends TestBase {
         }
     }
 
-    //@Test
-    public void google(){
+    @Test
+    public void proxy(){
         driver.get("http:/www.google.com");
     }
 }

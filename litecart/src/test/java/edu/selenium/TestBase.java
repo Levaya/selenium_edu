@@ -32,6 +32,7 @@ public class TestBase {
     public static WebDriver driver;
     public static WebDriverWait wait;
     public static Properties props;
+    public Proxy proxy;
 
     public boolean isElementPresent (By locator){
         try {//wait.until((WebDriver d)->d.findElement(locator));
@@ -78,6 +79,11 @@ public class TestBase {
         //через приведение типов создаем новый объект выбранного драйвера
         driver = (WebDriver) classType.newInstance();
         //driver = new RemoteWebDriver(new URL("http://192.168.1.64:4444"), new InternetExplorerOptions());
+//        proxy= new Proxy();
+//        proxy.setHttpProxy("http://127.0.0.1:8888");
+//        DesiredCapabilities caps= new DesiredCapabilities();
+//        caps.setCapability("proxy", proxy);
+//        driver= new ChromeDriver(caps);
         wait = new WebDriverWait(driver, 10);
     }
 
