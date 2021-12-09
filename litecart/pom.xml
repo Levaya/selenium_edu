@@ -41,14 +41,24 @@
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>4.0.0</version>
+            <version>4.1.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>au.net.zeus.jgdms</groupId>
-            <artifactId>fiddler</artifactId>
-            <version>3.1.0</version>
-            <type>pom</type>
+            <groupId>com.browserup</groupId>
+            <artifactId>browserup-proxy-core</artifactId>
+            <version>2.1.2</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.seleniumhq.selenium</groupId>
+                    <artifactId>selenium-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.seleniumhq.selenium</groupId>
+                    <artifactId>selenium-java</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 

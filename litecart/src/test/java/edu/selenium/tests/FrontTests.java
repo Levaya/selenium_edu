@@ -1,17 +1,14 @@
-package edu.selenium;
+package edu.selenium.tests;
 
+import com.browserup.harreader.model.Har;
+import edu.selenium.app.Application;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.Color;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -215,43 +212,22 @@ public class FrontTests extends TestBase {
         driver.findElement(By.xpath("//a[.='Logout']")).click();
     }
 
-    //@Test
+    @Test
     public void test4(){
-        List<String> locators = new ArrayList<>();
-        locators.add("//span[@class='quantity' and contains(.,'1')]");
-        locators.add("//span[@class='quantity' and contains(.,'2')]");
-        locators.add("//span[@class='quantity' and contains(.,'3')]");
-        for (String locator:locators) {
-            //клик по первому товару
-            driver.findElement(By.cssSelector("#box-most-popular li:first-child")).click();
-            //добавление в корзину
-            if (isElementPresent(By.cssSelector(".options"))){
-                WebElement select = driver.findElement(By.tagName("select"));
-                new Select(select).selectByIndex(1);
-                driver.findElement(By.name("add_cart_product")).click();}
-            else {driver.findElement(By.name("add_cart_product")).click();}
-            //ждем изменения количества
-            wait.until((WebDriver d) -> d.findElement(By.xpath(locator)));
-            //домой
-            driver.findElement(By.className("fa-home")).click();
-        }
-        //заходим в корзину
-        driver.findElement(By.cssSelector("#cart .link")).click();
-        //цикл, пока есть товар в корзине
-        while (isElementPresent(By.name("remove_cart_item"))){
-            //находим таблицу
-            WebElement dataTable = driver.findElement(By.className("dataTable"));
-            //ожидаем видимость кнопки remove
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("remove_cart_item")));
-            //клик по remove
-            driver.findElement(By.name("remove_cart_item")).click();
-            //ждем обновление таблицы
-            wait.until(ExpectedConditions.stalenessOf(dataTable));
-        }
+        Application app=new Application();
+        app.addItemsToCart();
+        app.goToCart();
+        app.removeItemsFromCart();
     }
 
-    @Test
+    //@Test
     public void proxy(){
+        proxy.newHar("google.com");
         driver.get("http:/www.google.com");
+        driver.findElement(By.name("q")).sendKeys("selenium");
+        driver.findElement(By.name("btnK")).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("result-stats")));
+        Har har = proxy.getHar();
+        har.getLog().getEntries().forEach(l -> System.out.println(l.getRequest().getUrl()));
     }
 }
