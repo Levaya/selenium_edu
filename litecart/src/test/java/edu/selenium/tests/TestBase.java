@@ -1,13 +1,14 @@
 package edu.selenium.tests;
 
-import com.browserup.bup.BrowserUpProxy;
 import org.junit.After;
 import org.junit.Before;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.IOException;
-
 import java.util.Properties;
 import java.util.Random;
 
@@ -18,7 +19,7 @@ public class TestBase {
     public static WebDriver driver;
     public static WebDriverWait wait;
     public static Properties props;
-    public BrowserUpProxy proxy;
+
 
     public boolean isElementPresent (By locator){
         try {//wait.until((WebDriver d)->d.findElement(locator));
@@ -64,13 +65,6 @@ public class TestBase {
         Class classType = forName(driverFromProperties);
         //через приведение типов создаем новый объект выбранного драйвера
         driver = (WebDriver) classType.newInstance();
-//        proxy = new BrowserUpProxyServer();
-//        proxy.start();
-//        Proxy seleniumProxy = ClientUtil.createSeleniumProxy(proxy);
-//        DesiredCapabilities capabilities = new DesiredCapabilities();
-//        capabilities.setCapability(CapabilityType.PROXY, seleniumProxy);
-//        driver = new FirefoxDriver(capabilities);
-//        proxy.enableHarCaptureTypes(CaptureType.REQUEST_CONTENT, CaptureType.RESPONSE_CONTENT);
         wait = new WebDriverWait(driver, 10);
     }
 

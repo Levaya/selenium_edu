@@ -1,14 +1,16 @@
 package edu.selenium.tests;
 
-import com.browserup.harreader.model.Har;
 import edu.selenium.app.Application;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -216,18 +218,7 @@ public class FrontTests extends TestBase {
     public void test4(){
         Application app=new Application();
         app.addItemsToCart();
-        app.goToCart();
+        app.openCart();
         app.removeItemsFromCart();
-    }
-
-    //@Test
-    public void proxy(){
-        proxy.newHar("google.com");
-        driver.get("http:/www.google.com");
-        driver.findElement(By.name("q")).sendKeys("selenium");
-        driver.findElement(By.name("btnK")).click();
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("result-stats")));
-        Har har = proxy.getHar();
-        har.getLog().getEntries().forEach(l -> System.out.println(l.getRequest().getUrl()));
     }
 }
